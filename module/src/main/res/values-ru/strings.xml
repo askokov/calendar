@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Календарь</string>
+    <string name="crash_report">Отчет о проблеме</string>
+
+    <string name="month">месяц</string>
+    <string name="day">день</string>
+    <string name="day_summary_description">Сохранено %1$s событий</string>
+    <string name="day_events_missing"> </string>
+    <string name="hour_summary_description">%1$s (всего %2$d)</string>
+    <string name="hour_events_missing"> </string>
+
+    <string-array name="week">
+        <item>Пн</item>
+        <item>Вт</item>
+        <item>Ср</item>
+        <item>Чт</item>
+        <item>Пт</item>
+        <item>Сб</item>
+        <item>Вс</item>
+    </string-array>
+
+    <string-array name="month_name">
+        <item>Январь %1$d</item>
+        <item>Февраль %1$d</item>
+        <item>Март %1$d</item>
+        <item>Апрель %1$d</item>
+        <item>Май %1$d</item>
+        <item>Июнь %1$d</item>
+        <item>Июль %1$d</item>
+        <item>Август %1$d</item>
+        <item>Сентябрь %1$d</item>
+        <item>Октябрь %1$d</item>
+        <item>Ноябрь %1$d</item>
+        <item>Декабрь %1$d</item>
+    </string-array>
+
+    <string-array name="month_with_day">
+        <item>%1$d Января %2$d</item>
+        <item>%1$d Февраля %2$d</item>
+        <item>%1$d Марта %2$d</item>
+        <item>%1$d Апреля %2$d</item>
+        <item>%1$d Мая %2$d</item>
+        <item>%1$d Июня %2$d</item>
+        <item>%1$d Июля %2$d</item>
+        <item>%1$d Августа %2$d</item>
+        <item>%1$d Сентября %2$d</item>
+        <item>%1$d Октября %2$d</item>
+        <item>%1$d Ноября %2$d</item>
+        <item>%1$d Декабря %2$d</item>
+    </string-array>
+
+</resources>

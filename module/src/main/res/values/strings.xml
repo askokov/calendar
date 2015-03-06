@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Calendar</string>
+    <string name="crash_report">Crash report</string>
+
+    <string name="month">month</string>
+    <string name="day">day</string>
+    <string name="day_summary_description">%1$s events were saved</string>
+    <string name="day_events_missing"> </string>
+    <string name="hour_summary_description">%1$s (total %2$d)</string>
+    <string name="hour_events_missing"> </string>
+
+    <string-array name="week">
+        <item>Sun</item>
+        <item>Mon</item>
+        <item>Tue</item>
+        <item>Wed</item>
+        <item>Thu</item>
+        <item>Fri</item>
+        <item>Sat</item>
+    </string-array>
+
+    <string-array name="month_name">
+        <item>January, %1$d</item>
+        <item>February, %1$d</item>
+        <item>March, %1$d</item>
+        <item>April, %1$d</item>
+        <item>May, %1$d</item>
+        <item>June, %1$d</item>
+        <item>July, %1$d</item>
+        <item>August, %1$d</item>
+        <item>September, %1$d</item>
+        <item>October, %1$d</item>
+        <item>November, %1$d</item>
+        <item>December, %1$d</item>
+    </string-array>
+
+    <string-array name="month_with_day">
+        <item>January %1$d, %2$d</item>
+        <item>February %1$d, %2$d</item>
+        <item>March %1$d, %2$d</item>
+        <item>April %1$d, %2$d</item>
+        <item>May %1$d, %2$d</item>
+        <item>June %1$d, %2$d</item>
+        <item>July %1$d, %2$d</item>
+        <item>August %1$d, %2$d</item>
+        <item>September %1$d, %2$d</item>
+        <item>October %1$d, %2$d</item>
+        <item>November %1$d, %2$d</item>
+        <item>December %1$d, %2$d</item>
+    </string-array>
+
+</resources>
