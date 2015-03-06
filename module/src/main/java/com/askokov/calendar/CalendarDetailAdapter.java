@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.askokov.calendar.model.Day;
@@ -91,7 +90,7 @@ public class CalendarDetailAdapter extends BaseAdapter {
                     }
                 }
 
-                if (((Day)first).isCurrent()) {
+                if (((Day)second).isCurrent()) {
                     view.findViewById(R.id.pinSecond).setBackgroundResource(R.drawable.pin_blue);
                 } else {
                     view.findViewById(R.id.pinSecond).setBackgroundResource(R.drawable.pin_gray);
