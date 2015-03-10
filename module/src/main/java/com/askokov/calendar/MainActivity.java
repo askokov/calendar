@@ -1,41 +1,30 @@
 package com.askokov.calendar;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageButton;
-import android.widget.ListView;
-import android.widget.TextView;
+import com.askokov.calendar.adapter.CalendarDetailAdapter;
+import com.askokov.calendar.data.CalendarFactory;
+import com.askokov.calendar.listener.CalendarPositionListener;
+import com.askokov.calendar.listener.PeriodClickListener;
 import com.askokov.calendar.model.Period;
-import com.askokov.calendar.service.CalendarService;
-import com.askokov.calendar.service.CalendarUtil;
+import org.joda.time.DateTime;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends FragmentActivity implements PeriodFragment.OnFragmentInteractionListener {
     private static final String TAG = "MainActivity";
-    private static DateFormat DF = new SimpleDateFormat("yyyy-MM-dd");
 
     private MenuItem mMenuMonth;
     private MenuItem mMenuDay;
-    private TextView mTextPeriod;
-    private TextView[] mColumns = new TextView[7];
 
-    private Date current;
+    private DateTime current;
     private Period.Type periodType;
-    private String[] monthName;
-    private String[] monthWithDay;
     private CalendarDetailAdapter mAdapter;
-
-    private CalendarService calendarService;
-
+    private CalendarFactory calendarFactory;
+    private PeriodFragment periodFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,96 +32,29 @@ public class MainActivity extends Activity {
         setContentView(R.layout.main_layout);
 
         periodType = Period.Type.MONTH;
-        try {
-            current = DF.parse("2015-03-01");
-        } catch (ParseException ex) {
-            Log.i(TAG, ex.getMessage());
-        }
+        current = new DateTime(2015,3,1,0,0,0,0);
 
-        String[] week = getResources().getStringArray(R.array.week);
-        monthName = getResources().getStringArray(R.array.month_name);
-        monthWithDay = getResources().getStringArray(R.array.month_with_day);
+        periodFragment = PeriodFragment.newInstance(current, periodType);
 
-        ImageButton btnPrev = (ImageButton)findViewById(R.id.btnPrev);
-        btnPrev.setOnClickListener(new View.OnClickListener() {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+            .add(R.id.periodContainer, periodFragment)
+            .commit();
+
+        calendarFactory = new CalendarFactory(this, getPackageName());
+
+        mAdapter = new CalendarDetailAdapter(this, new CalendarPositionListener());
+        mAdapter.setPeriodClickListener(new PeriodClickListener() {
             @Override
-            public void onClick(final View v) {
-                switch (periodType) {
-                    case DAY:
-                        current = CalendarUtil.previousDay(current);
-                        break;
-
-                    case MONTH:
-                        current = CalendarUtil.previousMonth(current);
-                        break;
-                }
-                initCalendar();
-                initEvents();
+            public void onPeriodClick(final Period period) {
+                Log.i(TAG, "onPeriodClick: type=" + period.getType() + ", label=" + period.getLabel());
             }
         });
+        mAdapter.setContent(calendarFactory.getPeriod(current, periodType), periodType);
 
-        ImageButton btnNext = (ImageButton)findViewById(R.id.btnNext);
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                switch (periodType) {
-                    case DAY:
-                        current = CalendarUtil.nextDay(current);
-
-                        break;
-
-                    case MONTH:
-                        current = CalendarUtil.nextMonth(current);
-
-                        break;
-                }
-                initCalendar();
-                initEvents();
-            }
-        });
-
-        mTextPeriod = (TextView)findViewById(R.id.textPeriod);
-
-        TextView day1 = (TextView)findViewById(R.id.day1);
-        day1.setText(week[0]);
-
-        TextView day2 = (TextView)findViewById(R.id.day2);
-        day2.setText(week[1]);
-
-        TextView day3 = (TextView)findViewById(R.id.day3);
-        day3.setText(week[2]);
-
-        TextView day4 = (TextView)findViewById(R.id.day4);
-        day4.setText(week[3]);
-
-        TextView day5 = (TextView)findViewById(R.id.day5);
-        day5.setText(week[4]);
-
-        TextView day6 = (TextView)findViewById(R.id.day6);
-        day6.setText(week[5]);
-
-        TextView day7 = (TextView)findViewById(R.id.day7);
-        day7.setText(week[6]);
-
-        mColumns[0] = day1;
-        mColumns[1] = day2;
-        mColumns[2] = day3;
-        mColumns[3] = day4;
-        mColumns[4] = day5;
-        mColumns[5] = day6;
-        mColumns[6] = day7;
-
-        initCalendar();
-        calendarService = new CalendarService(this, getPackageName());
-
-        mAdapter = new CalendarDetailAdapter(this);
-        mAdapter.setObjects(calendarService.getPeriod(current, periodType));
-
-        ListView mListView = (ListView) findViewById(R.id.calendarList);
+        CalendarListView mListView = (CalendarListView) findViewById(R.id.calendarList);
         mListView.setAdapter(mAdapter);
-
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -172,10 +94,17 @@ public class MainActivity extends Activity {
         }
 
         initActionBar(periodType);
-        initCalendar();
-        initEvents();
+        periodFragment.setData(current, periodType);
+        initEvents(current);
 
         return true;
+    }
+
+    @Override
+    public void onFragmentInteraction(final DateTime current) {
+        Log.i(TAG, "onFragmentInteraction");
+        this.current = current;
+        initEvents(current);
     }
 
     private void initActionBar(Period.Type type) {
@@ -193,35 +122,9 @@ public class MainActivity extends Activity {
         }
     }
 
-    private void initCalendar() {
-        int month = CalendarUtil.getMonth(current);
-        int dayOfMonth = CalendarUtil.getDayOfMonth(current);
-        int dayOfWeek = CalendarUtil.getDayOfWeek(current);
-        int year = CalendarUtil.getYear(current);
-
-        switch (periodType) {
-            case DAY:
-                String textDay = String.format(monthWithDay[month], dayOfMonth, year);
-                mTextPeriod.setText(textDay);
-                break;
-
-            case MONTH:
-                String textMonth = String.format(monthName[month], year);
-                mTextPeriod.setText(textMonth);
-                break;
-        }
-
-        for(int i = 0; i < mColumns.length; i++) {
-            if (i == dayOfWeek) {
-                mColumns[i].setBackgroundResource(R.drawable.circle);
-            } else {
-                mColumns[i].setBackgroundResource(R.drawable.circle_grey);
-            }
-        }
-    }
-
-    private void initEvents() {
-        mAdapter.setObjects(calendarService.getPeriod(current, periodType));
+    private void initEvents(final DateTime current) {
+        Log.i(TAG, "initEvents");
+        mAdapter.setContent(calendarFactory.getPeriod(current, periodType), periodType);
         mAdapter.notifyDataSetChanged();
     }
 }

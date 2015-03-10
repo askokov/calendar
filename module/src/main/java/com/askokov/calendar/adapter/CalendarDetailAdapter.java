@@ -1,41 +1,57 @@
-package com.askokov.calendar;
+package com.askokov.calendar.adapter;
 
 import java.util.List;
 
 import android.content.Context;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.askokov.calendar.R;
+import com.askokov.calendar.listener.ListPositionListener;
 import com.askokov.calendar.model.Day;
 import com.askokov.calendar.model.Event;
 import com.askokov.calendar.model.Period;
 
-public class CalendarDetailAdapter extends BaseAdapter {
+public class CalendarDetailAdapter extends CalendarBaseAdapter {
+    private static final String TAG = "CalendarDetailAdapter";
+
     private Context context;
     private LayoutInflater mLayoutInflater;
-    private List<Pair<Period, Period>> objects;
+    private List<Pair<Period, Period>> content;
 
-    public CalendarDetailAdapter(Context context) {
+    public CalendarDetailAdapter(final Context context, final ListPositionListener listPositionListener) {
         this.context = context;
         this.mLayoutInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        setListPositionListener(listPositionListener);
     }
 
-    public void setObjects(final List<Pair<Period, Period>> objects) {
-        this.objects = objects;
+    public void setContent(final List<Pair<Period, Period>> content, final Period.Type contentType) {
+        Log.i(TAG, "setContent");
+        this.content = content;
+
+        getListPositionListener().setContentType(contentType);
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
+
+        getListView().setSelection(getListPositionListener().getPosition());
     }
 
     @Override
     public int getCount() {
-        return objects.size();
+        return content.size();
     }
 
     @Override
     public Pair<Period, Period> getItem(int position) {
-        return objects.get(position);
+        return content.get(position);
     }
 
     @Override
@@ -44,7 +60,7 @@ public class CalendarDetailAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         View view = convertView;
         if (view == null) {
             view = mLayoutInflater.inflate(R.layout.events_layout, parent, false);
@@ -52,7 +68,17 @@ public class CalendarDetailAdapter extends BaseAdapter {
 
         Pair<Period, Period> pair = getItem(position);
 
-        Period first = pair.first;
+        final Period first = pair.first;
+        LinearLayout firstLayout = (LinearLayout) view.findViewById(R.id.first);
+        firstLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View v) {
+                if (getPeriodClickListener() != null) {
+                    getPeriodClickListener().onPeriodClick(first);
+                }
+            }
+        });
+
         LinearLayout firstLinearLayout = (LinearLayout)view.findViewById(R.id.eventFirstContainer);
         firstLinearLayout.removeAllViews();
         if (Period.Type.HOUR == first.getType()) {
@@ -73,10 +99,19 @@ public class CalendarDetailAdapter extends BaseAdapter {
         }
         ((TextView) view.findViewById(R.id.textLabelFirst)).setText(first.getLabel());
 
-        Period second = pair.second;
-        LinearLayout layout = (LinearLayout) view.findViewById(R.id.second);
+        final Period second = pair.second;
+        LinearLayout secondLayout = (LinearLayout) view.findViewById(R.id.second);
         if (second != null) {
-            layout.setVisibility(View.VISIBLE);
+            secondLayout.setVisibility(View.VISIBLE);
+
+            secondLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(final View v) {
+                    if (getPeriodClickListener() != null) {
+                        getPeriodClickListener().onPeriodClick(second);
+                    }
+                }
+            });
 
             LinearLayout secondLinearLayout = (LinearLayout)view.findViewById(R.id.eventSecondContainer);
             secondLinearLayout.removeAllViews();
@@ -98,7 +133,7 @@ public class CalendarDetailAdapter extends BaseAdapter {
             }
             ((TextView) view.findViewById(R.id.textLabelSecond)).setText(second.getLabel());
         } else {
-            layout.setVisibility(View.INVISIBLE);
+            secondLayout.setVisibility(View.INVISIBLE);
         }
 
         return view;

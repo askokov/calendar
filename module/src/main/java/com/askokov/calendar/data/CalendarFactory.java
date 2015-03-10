@@ -1,37 +1,39 @@
-package com.askokov.calendar.service;
+package com.askokov.calendar.data;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Calendar;
 import java.util.List;
 
 import android.content.Context;
 import android.util.Pair;
-import com.askokov.calendar.dao.CalendarDao;
+import com.askokov.calendar.data.CalendarData;
 import com.askokov.calendar.model.Day;
 import com.askokov.calendar.model.Hour;
+import com.askokov.calendar.model.ModelUtil;
 import com.askokov.calendar.model.Month;
 import com.askokov.calendar.model.Period;
+import org.joda.time.DateTime;
 
-public class CalendarService {
+public class CalendarFactory {
 
-    private CalendarDao calendarDao;
+    private CalendarData calendarData;
 
-    public CalendarService(Context context, String packageName) {
-        calendarDao = new CalendarDao(context, packageName);
+    public CalendarFactory(Context context, String packageName) {
+        calendarData = new CalendarData(context, packageName);
     }
 
-    public List<Pair<Period, Period>> getPeriod(Date date, Period.Type type) {
+    public List<Pair<Period, Period>> getPeriod(DateTime date, Period.Type type) {
         List<Pair<Period, Period>> result = null;
 
         switch (type) {
             case DAY:
-                Day d = calendarDao.getDayModel(date);
+                Day d = calendarData.getDayModel(date);
                 result = convertDayToPairs(d);
 
                 break;
 
             case MONTH:
-                Month m = calendarDao.getMonthModel(date);
+                Month m = calendarData.getMonthModel(date);
                 result = convertMonthToPairs(m, date);
                 setCurrentDay(date, result);
 
@@ -41,8 +43,8 @@ public class CalendarService {
         return result;
     }
 
-    private void setCurrentDay(Date date, List<Pair<Period, Period>> pairs) {
-        int day = CalendarUtil.getDayOfMonth(date) - 1;
+    private void setCurrentDay(DateTime date, List<Pair<Period, Period>> pairs) {
+        int day = date.getDayOfMonth() - 1;
 
         int rowN = day / 2;
         int colN = day % 2;
@@ -60,8 +62,8 @@ public class CalendarService {
 
             //24 hours = 12 hour pairs
             for (int i = 0; i < 12; i++) {
-                Hour first = CalendarUtil.byHour(hours, day.getDay(), i * 2);
-                Hour second = CalendarUtil.byHour(hours, day.getDay(), i * 2 + 1);
+                Hour first = ModelUtil.byHour(hours, day.getDay(), i * 2);
+                Hour second = ModelUtil.byHour(hours, day.getDay(), i * 2 + 1);
 
                 Pair<Period, Period> pair = new Pair<Period, Period>(first, second);
                 result.add(pair);
@@ -82,10 +84,13 @@ public class CalendarService {
         return result;
     }
 
-    private List<Pair<Period, Period>> convertMonthToPairs(Month month, Date date) {
+    private List<Pair<Period, Period>> convertMonthToPairs(Month month, DateTime date) {
         List<Pair<Period, Period>> result = new ArrayList<Pair<Period, Period>>();
 
-        int maxDays = CalendarUtil.daysByMonth(date);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(date.getMillis());
+        int maxDays = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+
         int pairs = maxDays / 2;
         int modulo = maxDays % 2;
 
@@ -93,25 +98,25 @@ public class CalendarService {
             List<Period> days = month.getChildren();
 
             for (int i = 0; i < pairs; i++) {
-                Period first = CalendarUtil.byDay(days, i * 2);
-                Period second = CalendarUtil.byDay(days, i * 2 + 1);
+                Period first = ModelUtil.byDay(days, i * 2);
+                Period second = ModelUtil.byDay(days, i * 2 + 1);
 
                 Pair<Period, Period> pair = new Pair<Period, Period>(first, second);
                 result.add(pair);
             }
 
             if (modulo > 0) {
-                Period first = CalendarUtil.byDay(days, maxDays - 1);
+                Period first = ModelUtil.byDay(days, maxDays - 1);
                 Pair<Period, Period> pair = new Pair<Period, Period>(first, null);
                 result.add(pair);
             }
         } else {
             for (int i = 0; i < pairs; i++) {
                 Day first = new Day();
-                first.setDay(i * 2);
+                first.setDay(i * 2 + 1);
 
                 Day second = new Day();
-                second.setDay(i * 2 + 1);
+                second.setDay(i * 2 + 2);
 
                 Pair<Period, Period> pair = new Pair<Period, Period>(first, second);
                 result.add(pair);
@@ -119,7 +124,7 @@ public class CalendarService {
 
             if (modulo > 0) {
                 Day first = new Day();
-                first.setDay(maxDays - 1);
+                first.setDay(maxDays);
 
                 Pair<Period, Period> pair = new Pair<Period, Period>(first, null);
                 result.add(pair);

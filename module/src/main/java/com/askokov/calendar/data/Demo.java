@@ -1,10 +1,6 @@
-package com.askokov.calendar.dao;
+package com.askokov.calendar.data;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import com.askokov.calendar.model.Day;
@@ -12,79 +8,49 @@ import com.askokov.calendar.model.Event;
 import com.askokov.calendar.model.Hour;
 import com.askokov.calendar.model.Month;
 import com.askokov.calendar.model.Period;
-import com.askokov.calendar.service.CalendarUtil;
+import org.joda.time.DateTime;
 
 public class Demo {
 
-    private static DateFormat DF = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-
-    private static Date hour11;
-    private static Date hour12;
-    private static Date hour13;
-    private static Date hour2;
-    private static Date hour31;
-    private static Date hour32;
-    private static Date hour4;
-    private static Date hour51;
-    private static Date hour52;
-    private static Date hour6;
-    private static Date hour7;
-    private static Date hour8;
-    private static Date hour91;
-    private static Date hour92;
-    private static Date hour101;
-    private static Date hour102;
-    private static Date hour110;
-    private static Date hour120;
-    private static Date hour130;
-    private static Date hour140;
-    private static Date hour150;
-
-    static {
-        try {
-            hour11 = DF.parse("2015-03-01 12:00");
-            hour12 = DF.parse("2015-03-01 12:20");
-            hour13 = DF.parse("2015-03-01 12:40");
-
-            hour2 = DF.parse("2015-03-01 13:20");
-
-            hour31 = DF.parse("2015-03-01 17:40");
-            hour32 = DF.parse("2015-03-01 17:55");
-
-            hour4 = DF.parse("2015-03-04 14:30");
-
-            hour51 = DF.parse("2015-03-05 10:00");
-            hour52 = DF.parse("2015-03-05 10:30");
-
-            hour6 = DF.parse("2015-03-05 23:30");
-
-            hour7 = DF.parse("2015-03-07 11:00");
-            hour8 = DF.parse("2015-03-07 15:00");
-
-            hour91 = DF.parse("2015-03-08 00:05");
-            hour92 = DF.parse("2015-03-08 23:55");
-
-            hour101 = DF.parse("2015-04-02 16:15");
-            hour102 = DF.parse("2015-04-02 16:45");
-
-            hour110 = DF.parse("2015-04-02 18:05");
-
-            hour120 = DF.parse("2015-04-03 10:00");
-            hour130 = DF.parse("2015-04-03 18:00");
-
-            hour140 = DF.parse("2015-04-29 9:00");
-            hour150 = DF.parse("2015-04-30 11:00");
-        } catch (ParseException ex) {
-
-        }
-    }
+    /*
+    DateTime dateTime = new DateTime(
+      2000, //year
+      1,    // month
+      1,    // day
+      0,    // hour (midnight is zero)
+      0,    // minute
+      0,    // second
+      0     // milliseconds
+    );
+     */
+    private static DateTime hour11 = new DateTime(2015,3,1,12,0,0,0);
+    private static DateTime hour12 = new DateTime(2015,3,1,12,20,0,0);
+    private static DateTime hour13 = new DateTime(2015,3,1,12,40,0,0);
+    private static DateTime hour2 = new DateTime(2015,3,1,13,20,0,0);
+    private static DateTime hour31 = new DateTime(2015,3,1,17,40,0,0);
+    private static DateTime hour32 = new DateTime(2015,3,1,17,55,0,0);
+    private static DateTime hour4 = new DateTime(2015,3,4,14,30,0,0);
+    private static DateTime hour51 = new DateTime(2015,3,5,10,0,0,0);
+    private static DateTime hour52 = new DateTime(2015,3,5,10,30,0,0);
+    private static DateTime hour6 = new DateTime(2015,3,5,23,30,0,0);
+    private static DateTime hour7 = new DateTime(2015,3,7,11,0,0,0);
+    private static DateTime hour8 = new DateTime(2015,3,7,15,0,0,0);
+    private static DateTime hour91 = new DateTime(2015,3,8,0,5,0,0);
+    private static DateTime hour92 = new DateTime(2015,3,8,23,55,0,0);
+    private static DateTime hour101 = new DateTime(2015,4,2,16,15,0,0);
+    private static DateTime hour102 = new DateTime(2015,4,2,16,45,0,0);
+    private static DateTime hour110 = new DateTime(2015,4,2,18,5,0,0);
+    private static DateTime hour120 = new DateTime(2015,4,3,10,0,0,0);
+    private static DateTime hour130 = new DateTime(2015,4,3,18,0,0,0);
+    private static DateTime hour140 = new DateTime(2015,4,29,9,0,0,0);
+    private static DateTime hour150 = new DateTime(2015,4,30,11,0,0,0);
 
     private Demo() {
     }
 
     private static Hour getHour1() {
         Hour h = new Hour();
-        h.setHour(CalendarUtil.getHourOfDay(hour11));
+        h.setHour(hour11.getHourOfDay());
 
         List<Event> events = new ArrayList<Event>();
         events.add(new Event(hour11, "Event 11"));
@@ -98,7 +64,7 @@ public class Demo {
 
     private static Hour getHour2() {
         Hour h = new Hour();
-        h.setHour(CalendarUtil.getHourOfDay(hour2));
+        h.setHour(hour2.getHourOfDay());
 
         List<Event> events = new ArrayList<Event>();
         events.add(new Event(hour2, "Event 2"));
@@ -110,7 +76,7 @@ public class Demo {
 
     private static Hour getHour3() {
         Hour h = new Hour();
-        h.setHour(CalendarUtil.getHourOfDay(hour31));
+        h.setHour(hour31.getHourOfDay());
 
         List<Event> events = new ArrayList<Event>();
         events.add(new Event(hour31, "Event 31"));
@@ -123,7 +89,7 @@ public class Demo {
 
     private static Hour getHour4() {
         Hour h = new Hour();
-        h.setHour(CalendarUtil.getHourOfDay(hour4));
+        h.setHour(hour4.getHourOfDay());
 
         List<Event> events = new ArrayList<Event>();
         events.add(new Event(hour4, "Event 4"));
@@ -135,7 +101,7 @@ public class Demo {
 
     private static Hour getHour5() {
         Hour h = new Hour();
-        h.setHour(CalendarUtil.getHourOfDay(hour51));
+        h.setHour(hour51.getHourOfDay());
 
         List<Event> events = new ArrayList<Event>();
         events.add(new Event(hour51, "Event 51"));
@@ -148,7 +114,7 @@ public class Demo {
 
     private static Hour getHour6() {
         Hour h = new Hour();
-        h.setHour(CalendarUtil.getHourOfDay(hour6));
+        h.setHour(hour6.getHourOfDay());
 
         List<Event> events = new ArrayList<Event>();
         events.add(new Event(hour6, "Event 6"));
@@ -160,7 +126,7 @@ public class Demo {
 
     private static Hour getHour7() {
         Hour h = new Hour();
-        h.setHour(CalendarUtil.getHourOfDay(hour7));
+        h.setHour(hour7.getHourOfDay());
 
         List<Event> events = new ArrayList<Event>();
         events.add(new Event(hour7, "Event 7"));
@@ -172,7 +138,7 @@ public class Demo {
 
     private static Hour getHour8() {
         Hour h = new Hour();
-        h.setHour(CalendarUtil.getHourOfDay(hour8));
+        h.setHour(hour8.getHourOfDay());
 
         List<Event> events = new ArrayList<Event>();
         events.add(new Event(hour8, "Event 8"));
@@ -184,7 +150,7 @@ public class Demo {
 
     private static Hour getHour91() {
         Hour h = new Hour();
-        h.setHour(CalendarUtil.getHourOfDay(hour91));
+        h.setHour(hour91.getHourOfDay());
 
         List<Event> events = new ArrayList<Event>();
         events.add(new Event(hour91, "Event 91"));
@@ -196,7 +162,7 @@ public class Demo {
 
     private static Hour getHour92() {
         Hour h = new Hour();
-        h.setHour(CalendarUtil.getHourOfDay(hour92));
+        h.setHour(hour92.getHourOfDay());
 
         List<Event> events = new ArrayList<Event>();
         events.add(new Event(hour92, "Event 92"));
@@ -208,7 +174,7 @@ public class Demo {
 
     private static Hour getHour10() {
         Hour h = new Hour();
-        h.setHour(CalendarUtil.getHourOfDay(hour101));
+        h.setHour(hour101.getHourOfDay());
 
         List<Event> events = new ArrayList<Event>();
         events.add(new Event(hour101, "Event 101"));
@@ -221,7 +187,7 @@ public class Demo {
 
     private static Hour getHour11() {
         Hour h = new Hour();
-        h.setHour(CalendarUtil.getHourOfDay(hour110));
+        h.setHour(hour110.getHourOfDay());
 
         List<Event> events = new ArrayList<Event>();
         events.add(new Event(hour110, "Event 110"));
@@ -233,7 +199,7 @@ public class Demo {
 
     private static Hour getHour12() {
         Hour h = new Hour();
-        h.setHour(CalendarUtil.getHourOfDay(hour120));
+        h.setHour(hour120.getHourOfDay());
 
         List<Event> events = new ArrayList<Event>();
         events.add(new Event(hour120, "Event 120"));
@@ -245,7 +211,7 @@ public class Demo {
 
     private static Hour getHour13() {
         Hour h = new Hour();
-        h.setHour(CalendarUtil.getHourOfDay(hour130));
+        h.setHour(hour130.getHourOfDay());
 
         List<Event> events = new ArrayList<Event>();
         events.add(new Event(hour130, "Event 130"));
@@ -257,7 +223,7 @@ public class Demo {
 
     private static Hour getHour14() {
         Hour h = new Hour();
-        h.setHour(CalendarUtil.getHourOfDay(hour140));
+        h.setHour(hour140.getHourOfDay());
 
         List<Event> events = new ArrayList<Event>();
         events.add(new Event(hour140, "Event 140"));
@@ -269,7 +235,7 @@ public class Demo {
 
     private static Hour getHour15() {
         Hour h = new Hour();
-        h.setHour(CalendarUtil.getHourOfDay(hour150));
+        h.setHour(hour150.getHourOfDay());
 
         List<Event> events = new ArrayList<Event>();
         events.add(new Event(hour150, "Event 150"));
@@ -281,7 +247,7 @@ public class Demo {
 
     private static Day getDate1() {
         Day day = new Day();
-        day.setDay(CalendarUtil.getDayOfMonth(hour11));
+        day.setDay(hour11.getDayOfMonth());
 
         List<Period> hours = new ArrayList<Period>();
         hours.add(getHour1());
@@ -295,7 +261,7 @@ public class Demo {
 
     private static Day getDate2() {
         Day day = new Day();
-        day.setDay(CalendarUtil.getDayOfMonth(hour4));
+        day.setDay(hour4.getDayOfMonth());
 
         List<Period> hours = new ArrayList<Period>();
         hours.add(getHour4());
@@ -307,7 +273,7 @@ public class Demo {
 
     private static Day getDate3() {
         Day day = new Day();
-        day.setDay(CalendarUtil.getDayOfMonth(hour51));
+        day.setDay(hour51.getDayOfMonth());
 
         List<Period> hours = new ArrayList<Period>();
         hours.add(getHour5());
@@ -320,7 +286,7 @@ public class Demo {
 
     private static Day getDate4() {
         Day day = new Day();
-        day.setDay(CalendarUtil.getDayOfMonth(hour7));
+        day.setDay(hour7.getDayOfMonth());
 
         List<Period> hours = new ArrayList<Period>();
         hours.add(getHour7());
@@ -333,7 +299,7 @@ public class Demo {
 
     private static Day getDate5() {
         Day day = new Day();
-        day.setDay(CalendarUtil.getDayOfMonth(hour91));
+        day.setDay(hour91.getDayOfMonth());
 
         List<Period> hours = new ArrayList<Period>();
         hours.add(getHour91());
@@ -346,7 +312,7 @@ public class Demo {
 
     private static Day getDate6() {
         Day day = new Day();
-        day.setDay(CalendarUtil.getDayOfMonth(hour101));
+        day.setDay(hour101.getDayOfMonth());
 
         List<Period> hours = new ArrayList<Period>();
         hours.add(getHour10());
@@ -359,7 +325,7 @@ public class Demo {
 
     private static Day getDate7() {
         Day day = new Day();
-        day.setDay(CalendarUtil.getDayOfMonth(hour120));
+        day.setDay(hour120.getDayOfMonth());
 
         List<Period> hours = new ArrayList<Period>();
         hours.add(getHour12());
@@ -372,7 +338,7 @@ public class Demo {
 
     private static Day getDate8() {
         Day day = new Day();
-        day.setDay(CalendarUtil.getDayOfMonth(hour140));
+        day.setDay(hour140.getDayOfMonth());
 
         List<Period> hours = new ArrayList<Period>();
         hours.add(getHour14());
@@ -384,7 +350,7 @@ public class Demo {
 
     private static Day getDate9() {
         Day day = new Day();
-        day.setDay(CalendarUtil.getDayOfMonth(hour150));
+        day.setDay(hour150.getDayOfMonth());
 
         List<Period> hours = new ArrayList<Period>();
         hours.add(getHour15());
@@ -396,7 +362,7 @@ public class Demo {
 
     private static Month getMonth1() {
         Month month = new Month();
-        month.setMonth(CalendarUtil.getMonth(hour11));
+        month.setMonth(hour11.getMonthOfYear());
 
         List<Period> days = new ArrayList<Period>();
         days.add(getDate1());
@@ -412,7 +378,7 @@ public class Demo {
 
     private static Month getMonth2() {
         Month month = new Month();
-        month.setMonth(CalendarUtil.getMonth(hour101));
+        month.setMonth(hour101.getMonthOfYear());
 
         List<Period> days = new ArrayList<Period>();
         days.add(getDate6());
@@ -425,15 +391,15 @@ public class Demo {
         return month;
     }
 
-    public static Month createMonthModel(Date date) {
+    public static Month createMonthModel(DateTime date) {
         Month period = null;
-        int month = CalendarUtil.getMonth(date);
+        int month = date.getMonthOfYear();
 
         switch (month) {
-            case 2:
+            case 3:
                 period = getMonth1();
                 break;
-            case 3:
+            case 4:
                 period = getMonth2();
                 break;
             default:
@@ -443,13 +409,13 @@ public class Demo {
         return period;
     }
 
-    public static Day createDayModel(Date date) {
+    public static Day createDayModel(DateTime date) {
         Day period = null;
-        int month = CalendarUtil.getMonth(date);
-        int day = CalendarUtil.getDayOfMonth(date);
+        int month = date.getMonthOfYear();
+        int day = date.getDayOfMonth();
 
         switch (month) {
-            case 2:
+            case 3:
                 switch (day) {
                     case 1:
                         period = getDate1();
@@ -467,7 +433,7 @@ public class Demo {
                         period = getDate5();
                         break;
                 }
-            case 3:
+            case 4:
                 switch (day) {
                     case 2:
                         period = getDate6();

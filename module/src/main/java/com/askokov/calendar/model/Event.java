@@ -1,31 +1,29 @@
 package com.askokov.calendar.model;
 
-import java.util.Date;
-
-import com.askokov.calendar.service.CalendarUtil;
+import org.joda.time.DateTime;
 
 public class Event {
-    private Date dateTime;
+    private DateTime dateTime;
     private String description;
 
     public Event() {
     }
 
-    public Event(final Date dateTime, final String description) {
+    public Event(final DateTime dateTime, final String description) {
         this.dateTime = dateTime;
         this.description = description;
     }
 
-    public Date getDateTime() {
+    public DateTime getDateTime() {
         return dateTime;
     }
 
-    public void setDateTime(final Date dateTime) {
+    public void setDateTime(final DateTime dateTime) {
         this.dateTime = dateTime;
     }
 
     public String getDescription() {
-        return description + " (" + CalendarUtil.formatHour(dateTime) + ")";
+        return description + " (" + dateTime.toString("HH:mm") + ")";
     }
 
     public void setDescription(final String description) {

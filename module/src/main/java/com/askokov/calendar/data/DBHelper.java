@@ -1,6 +1,4 @@
-package com.askokov.calendar.dao;
-
-import java.util.Date;
+package com.askokov.calendar.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -8,6 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import com.askokov.calendar.model.Day;
 import com.askokov.calendar.model.Month;
+import org.joda.time.DateTime;
 
 public class DBHelper extends SQLiteOpenHelper {
     private static final String TAG = "DBHelper";
@@ -37,7 +36,7 @@ public class DBHelper extends SQLiteOpenHelper {
         Log.i(TAG, "onUpgrade database from " + oldVersion + " to " + newVersion + " version");
     }
 
-    public Day getDayModel(Date date) {
+    public Day getDayModel(DateTime date) {
         SQLiteDatabase db = getReadableDatabase();
 
         db.close();
@@ -45,7 +44,7 @@ public class DBHelper extends SQLiteOpenHelper {
         return Demo.createDayModel(date);
     }
 
-    public Month getMonthModel(Date date) {
+    public Month getMonthModel(DateTime date) {
         SQLiteDatabase db = getReadableDatabase();
 
         db.close();
