@@ -6,12 +6,11 @@ import java.util.List;
 
 import android.content.Context;
 import android.util.Pair;
-import com.askokov.calendar.data.CalendarData;
-import com.askokov.calendar.model.Day;
-import com.askokov.calendar.model.Hour;
-import com.askokov.calendar.model.ModelUtil;
-import com.askokov.calendar.model.Month;
-import com.askokov.calendar.model.Period;
+import com.askokov.calendar.period.Day;
+import com.askokov.calendar.period.EventPeriod;
+import com.askokov.calendar.period.Hour;
+import com.askokov.calendar.period.Month;
+import com.askokov.calendar.period.Period;
 import org.joda.time.DateTime;
 
 public class CalendarFactory {
@@ -22,20 +21,19 @@ public class CalendarFactory {
         calendarData = new CalendarData(context, packageName);
     }
 
-    public List<Pair<Period, Period>> getPeriod(DateTime date, Period.Type type) {
-        List<Pair<Period, Period>> result = null;
+    public List<Pair<EventPeriod, EventPeriod>> getPeriod(Period current) {
+        List<Pair<EventPeriod, EventPeriod>> result = null;
 
-        switch (type) {
+        switch (current.getType()) {
             case DAY:
-                Day d = calendarData.getDayModel(date);
-                result = convertDayToPairs(d);
+                Day d = calendarData.getDayModel(current.getDate());
+                result = convertDayToPairs(d, current.getDate());
 
                 break;
 
             case MONTH:
-                Month m = calendarData.getMonthModel(date);
-                result = convertMonthToPairs(m, date);
-                setCurrentDay(date, result);
+                Month m = calendarData.getMonthModel(current.getDate());
+                result = convertMonthToPairs(m, current.getDate());
 
                 break;
         }
@@ -43,40 +41,28 @@ public class CalendarFactory {
         return result;
     }
 
-    private void setCurrentDay(DateTime date, List<Pair<Period, Period>> pairs) {
-        int day = date.getDayOfMonth() - 1;
-
-        int rowN = day / 2;
-        int colN = day % 2;
-
-        Pair<Period, Period> row = pairs.get(rowN);
-        Day d = colN == 0 ? (Day)row.first : (Day)row.second;
-        d.setCurrent(true);
-    }
-
-    private List<Pair<Period, Period>> convertDayToPairs(Day day) {
-        List<Pair<Period, Period>> result = new ArrayList<Pair<Period, Period>>();
+    private List<Pair<EventPeriod, EventPeriod>> convertDayToPairs(Day day, DateTime date) {
+        List<Pair<EventPeriod, EventPeriod>> result = new ArrayList<Pair<EventPeriod, EventPeriod>>();
 
         if (day != null) {
-            List<Period> hours = day.getChildren();
-
             //24 hours = 12 hour pairs
             for (int i = 0; i < 12; i++) {
-                Hour first = ModelUtil.byHour(hours, day.getDay(), i * 2);
-                Hour second = ModelUtil.byHour(hours, day.getDay(), i * 2 + 1);
+                Hour first = PeriodUtil.byHour(day, i * 2);
+                Hour second = PeriodUtil.byHour(day, i * 2 + 1);
 
-                Pair<Period, Period> pair = new Pair<Period, Period>(first, second);
+                Pair<EventPeriod, EventPeriod> pair = new Pair<EventPeriod, EventPeriod>(first, second);
                 result.add(pair);
             }
         } else {
             //24 hours = 12 hour pairs
             for (int i = 0; i < 12; i++) {
                 Hour first = new Hour();
-                first.setHour(i * 2);
-                Hour second = new Hour();
-                second.setHour(i * 2 + 1);
+                first.setDate(new DateTime(date.getYear(), date.getMonthOfYear(), date.getDayOfMonth(), i * 2, 0, 0, 0));
 
-                Pair<Period, Period> pair = new Pair<Period, Period>(first, second);
+                Hour second = new Hour();
+                second.setDate(new DateTime(date.getYear(), date.getMonthOfYear(), date.getDayOfMonth(), i * 2 + 1, 0, 0, 0));
+
+                Pair<EventPeriod, EventPeriod> pair = new Pair<EventPeriod, EventPeriod>(first, second);
                 result.add(pair);
             }
         }
@@ -84,8 +70,8 @@ public class CalendarFactory {
         return result;
     }
 
-    private List<Pair<Period, Period>> convertMonthToPairs(Month month, DateTime date) {
-        List<Pair<Period, Period>> result = new ArrayList<Pair<Period, Period>>();
+    private List<Pair<EventPeriod, EventPeriod>> convertMonthToPairs(Month month, DateTime date) {
+        List<Pair<EventPeriod, EventPeriod>> result = new ArrayList<Pair<EventPeriod, EventPeriod>>();
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(date.getMillis());
@@ -95,38 +81,36 @@ public class CalendarFactory {
         int modulo = maxDays % 2;
 
         if (month != null) {
-            List<Period> days = month.getChildren();
-
             for (int i = 0; i < pairs; i++) {
-                Period first = ModelUtil.byDay(days, i * 2);
-                Period second = ModelUtil.byDay(days, i * 2 + 1);
+                EventPeriod first = PeriodUtil.byDay(month, i * 2);
+                EventPeriod second = PeriodUtil.byDay(month, i * 2 + 1);
 
-                Pair<Period, Period> pair = new Pair<Period, Period>(first, second);
+                Pair<EventPeriod, EventPeriod> pair = new Pair<EventPeriod, EventPeriod>(first, second);
                 result.add(pair);
             }
 
             if (modulo > 0) {
-                Period first = ModelUtil.byDay(days, maxDays - 1);
-                Pair<Period, Period> pair = new Pair<Period, Period>(first, null);
+                EventPeriod first = PeriodUtil.byDay(month, maxDays - 1);
+                Pair<EventPeriod, EventPeriod> pair = new Pair<EventPeriod, EventPeriod>(first, null);
                 result.add(pair);
             }
         } else {
             for (int i = 0; i < pairs; i++) {
                 Day first = new Day();
-                first.setDay(i * 2 + 1);
+                first.setDate(new DateTime(date.getYear(), date.getMonthOfYear(), i * 2 + 1, 0, 0, 0, 0));
 
                 Day second = new Day();
-                second.setDay(i * 2 + 2);
+                second.setDate(new DateTime(date.getYear(), date.getMonthOfYear(), i * 2 + 2, 0, 0, 0, 0));
 
-                Pair<Period, Period> pair = new Pair<Period, Period>(first, second);
+                Pair<EventPeriod, EventPeriod> pair = new Pair<EventPeriod, EventPeriod>(first, second);
                 result.add(pair);
             }
 
             if (modulo > 0) {
                 Day first = new Day();
-                first.setDay(maxDays);
+                first.setDate(new DateTime(date.getYear(), date.getMonthOfYear(), maxDays, 0, 0, 0, 0));
 
-                Pair<Period, Period> pair = new Pair<Period, Period>(first, null);
+                Pair<EventPeriod, EventPeriod> pair = new Pair<EventPeriod, EventPeriod>(first, null);
                 result.add(pair);
             }
         }

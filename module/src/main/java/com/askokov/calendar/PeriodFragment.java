@@ -7,10 +7,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
-import com.askokov.calendar.model.Period;
-import org.joda.time.DateTime;
+import com.askokov.calendar.period.Period;
 
 
 public class PeriodFragment extends Fragment {
@@ -19,18 +17,15 @@ public class PeriodFragment extends Fragment {
     private TextView mTextPeriod;
     private TextView[] mColumns = new TextView[7];
 
-    private DateTime current;
+    private Period current;
     private String[] monthName;
     private String[] monthWithDay;
 
-    private Period.Type periodType;
-
     private OnFragmentInteractionListener mListener;
 
-    public static PeriodFragment newInstance(DateTime current, Period.Type periodType) {
+    public static PeriodFragment newInstance(Period current) {
         PeriodFragment fragment = new PeriodFragment();
         fragment.current = current;
-        fragment.periodType = periodType;
 
         return fragment;
     }
@@ -50,48 +45,6 @@ public class PeriodFragment extends Fragment {
         Log.i(TAG, "onCreateView");
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_period, container, false);
-
-        ImageButton btnPrev = (ImageButton)view.findViewById(R.id.btnPrev);
-        btnPrev.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                Log.i(TAG, "btnPrev.onClick");
-                switch (periodType) {
-                    case DAY:
-                        current = current.minusDays(1);
-                        break;
-
-                    case MONTH:
-                        current = current.minusMonths(1);
-                        break;
-                }
-                initCalendar();
-
-                mListener.onFragmentInteraction(current);
-            }
-        });
-
-        ImageButton btnNext = (ImageButton)view.findViewById(R.id.btnNext);
-        btnNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View v) {
-                Log.i(TAG, "btnNext.onClick");
-                switch (periodType) {
-                    case DAY:
-                        current = current.plusDays(1);
-
-                        break;
-
-                    case MONTH:
-                        current = current.plusMonths(1);
-
-                        break;
-                }
-                initCalendar();
-
-                mListener.onFragmentInteraction(current);
-            }
-        });
 
         String[] week = view.getResources().getStringArray(R.array.week);
         monthName = view.getResources().getStringArray(R.array.month_name);
@@ -128,9 +81,14 @@ public class PeriodFragment extends Fragment {
         mColumns[5] = day6;
         mColumns[6] = day7;
 
-        initCalendar();
-
         return view;
+    }
+
+    @Override
+    public void onViewCreated(final View view, final Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        initCalendar();
     }
 
     @Override
@@ -151,9 +109,8 @@ public class PeriodFragment extends Fragment {
         mListener = null;
     }
 
-    public void setData(final DateTime current, final Period.Type periodType) {
+    public void setData(final Period current) {
         this.current = current;
-        this.periodType = periodType;
 
         initCalendar();
     }
@@ -169,16 +126,16 @@ public class PeriodFragment extends Fragment {
      * >Communicating with Other Fragments</a> for more information.
      */
     public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(DateTime current);
+        void onFragmentInteraction(Period changed);
     }
 
     private void initCalendar() {
-        int dayOfWeek = current.getDayOfWeek() - 1;
-        int month = current.getMonthOfYear() - 1;
-        int day = current.getDayOfMonth();
-        int year = current.getYear();
+        int dayOfWeek = current.getDate().getDayOfWeek() - 1;
+        int month = current.getDate().getMonthOfYear() - 1;
+        int day = current.getDate().getDayOfMonth();
+        int year = current.getDate().getYear();
 
-        switch (periodType) {
+        switch (current.getType()) {
             case DAY:
                 String textDay = String.format(monthWithDay[month], day, year);
                 mTextPeriod.setText(textDay);

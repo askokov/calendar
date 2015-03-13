@@ -6,10 +6,13 @@ import android.util.Log;
 import android.widget.AbsListView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import com.askokov.calendar.adapter.CalendarBaseAdapter;
+import com.askokov.calendar.adapter.PeriodAdapter;
+import com.askokov.calendar.adapter.CalendarAdapter;
 
 public class CalendarListView extends ListView {
     private static final String TAG = "CalendarListView";
+
+    private CalendarAdapter mAdapter;
 
     public CalendarListView(final Context context) {
         super(context);
@@ -23,16 +26,19 @@ public class CalendarListView extends ListView {
         super(context, attrs, defStyle);
     }
 
+    public boolean isAdapter() {
+        return mAdapter != null;
+    }
+
     @Override
     public void setAdapter(final ListAdapter adapter) {
         Log.i(TAG, "setAdapter");
-        if (!(adapter instanceof CalendarBaseAdapter)) {
+        if (!(adapter instanceof PeriodAdapter)) {
             throw new ClassCastException(adapter.toString() + " must extends CalendarBaseAdapter");
         }
         super.setAdapter(adapter);
 
-
-        final CalendarBaseAdapter mAdapter = (CalendarBaseAdapter) adapter;
+        mAdapter = (CalendarAdapter) adapter;
         mAdapter.setListView(this);
 
         setOnScrollListener(new AbsListView.OnScrollListener() {

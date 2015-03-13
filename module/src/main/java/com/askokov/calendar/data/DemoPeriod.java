@@ -1,16 +1,14 @@
 package com.askokov.calendar.data;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
-import com.askokov.calendar.model.Day;
-import com.askokov.calendar.model.Event;
-import com.askokov.calendar.model.Hour;
-import com.askokov.calendar.model.Month;
-import com.askokov.calendar.model.Period;
+import com.askokov.calendar.period.Day;
+import com.askokov.calendar.period.Event;
+import com.askokov.calendar.period.Hour;
+import com.askokov.calendar.period.Month;
 import org.joda.time.DateTime;
 
-public class Demo {
+public class DemoPeriod {
 
     /*
     DateTime dateTime = new DateTime(
@@ -22,7 +20,8 @@ public class Demo {
       0,    // second
       0     // milliseconds
     );
-     */
+    */
+
     private static DateTime hour11 = new DateTime(2015,3,1,12,0,0,0);
     private static DateTime hour12 = new DateTime(2015,3,1,12,20,0,0);
     private static DateTime hour13 = new DateTime(2015,3,1,12,40,0,0);
@@ -45,348 +44,250 @@ public class Demo {
     private static DateTime hour140 = new DateTime(2015,4,29,9,0,0,0);
     private static DateTime hour150 = new DateTime(2015,4,30,11,0,0,0);
 
-    private Demo() {
+    private DemoPeriod() {
     }
 
     private static Hour getHour1() {
         Hour h = new Hour();
-        h.setHour(hour11.getHourOfDay());
+        h.setDate(hour11);
 
-        List<Event> events = new ArrayList<Event>();
-        events.add(new Event(hour11, "Event 11"));
-        events.add(new Event(hour12, "Event 12"));
-        events.add(new Event(hour13, "Event 13"));
-
-        h.setEvents(events);
+        h.getEvents().addAll(
+            Arrays.asList(new Event(hour11, "Event 11"), new Event(hour12, "Event 12"), new Event(hour13, "Event 13")));
 
         return h;
     }
 
     private static Hour getHour2() {
         Hour h = new Hour();
-        h.setHour(hour2.getHourOfDay());
+        h.setDate(hour2);
 
-        List<Event> events = new ArrayList<Event>();
-        events.add(new Event(hour2, "Event 2"));
-
-        h.setEvents(events);
+        h.getEvents().addAll(Arrays.asList(new Event(hour2, "Event 2")));
 
         return h;
     }
 
     private static Hour getHour3() {
         Hour h = new Hour();
-        h.setHour(hour31.getHourOfDay());
+        h.setDate(hour31);
 
-        List<Event> events = new ArrayList<Event>();
-        events.add(new Event(hour31, "Event 31"));
-        events.add(new Event(hour32, "Event 32"));
-
-        h.setEvents(events);
+        h.getEvents().addAll(
+            Arrays.asList(new Event(hour31, "Event 31"), new Event(hour32, "Event 32")));
 
         return h;
     }
 
     private static Hour getHour4() {
         Hour h = new Hour();
-        h.setHour(hour4.getHourOfDay());
+        h.setDate(hour4);
 
-        List<Event> events = new ArrayList<Event>();
-        events.add(new Event(hour4, "Event 4"));
-
-        h.setEvents(events);
+        h.getEvents().addAll(Arrays.asList(new Event(hour4, "Event 4")));
 
         return h;
     }
 
     private static Hour getHour5() {
         Hour h = new Hour();
-        h.setHour(hour51.getHourOfDay());
+        h.setDate(hour51);
 
-        List<Event> events = new ArrayList<Event>();
-        events.add(new Event(hour51, "Event 51"));
-        events.add(new Event(hour52, "Event 52"));
-
-        h.setEvents(events);
+        h.getEvents().addAll(Arrays.asList(new Event(hour51, "Event 51"), new Event(hour52, "Event 52")));
 
         return h;
     }
 
     private static Hour getHour6() {
         Hour h = new Hour();
-        h.setHour(hour6.getHourOfDay());
+        h.setDate(hour6);
 
-        List<Event> events = new ArrayList<Event>();
-        events.add(new Event(hour6, "Event 6"));
-
-        h.setEvents(events);
+        h.getEvents().addAll(Arrays.asList(new Event(hour6, "Event 6")));
 
         return h;
     }
 
     private static Hour getHour7() {
         Hour h = new Hour();
-        h.setHour(hour7.getHourOfDay());
+        h.setDate(hour7);
 
-        List<Event> events = new ArrayList<Event>();
-        events.add(new Event(hour7, "Event 7"));
-
-        h.setEvents(events);
+        h.getEvents().addAll(Arrays.asList(new Event(hour7, "Event 7")));
 
         return h;
     }
 
     private static Hour getHour8() {
         Hour h = new Hour();
-        h.setHour(hour8.getHourOfDay());
+        h.setDate(hour8);
 
-        List<Event> events = new ArrayList<Event>();
-        events.add(new Event(hour8, "Event 8"));
-
-        h.setEvents(events);
+        h.getEvents().addAll(Arrays.asList(new Event(hour8, "Event 8")));
 
         return h;
     }
 
     private static Hour getHour91() {
         Hour h = new Hour();
-        h.setHour(hour91.getHourOfDay());
+        h.setDate(hour91);
 
-        List<Event> events = new ArrayList<Event>();
-        events.add(new Event(hour91, "Event 91"));
-
-        h.setEvents(events);
+        h.getEvents().addAll(Arrays.asList(new Event(hour91, "Event 91")));
 
         return h;
     }
 
     private static Hour getHour92() {
         Hour h = new Hour();
-        h.setHour(hour92.getHourOfDay());
+        h.setDate(hour92);
 
-        List<Event> events = new ArrayList<Event>();
-        events.add(new Event(hour92, "Event 92"));
-
-        h.setEvents(events);
+        h.getEvents().addAll(Arrays.asList(new Event(hour91, "Event 92")));
 
         return h;
     }
 
     private static Hour getHour10() {
         Hour h = new Hour();
-        h.setHour(hour101.getHourOfDay());
+        h.setDate(hour101);
 
-        List<Event> events = new ArrayList<Event>();
-        events.add(new Event(hour101, "Event 101"));
-        events.add(new Event(hour102, "Event 102"));
-
-        h.setEvents(events);
+        h.getEvents().addAll(Arrays.asList(new Event(hour101, "Event 101"), new Event(hour102, "Event 102")));
 
         return h;
     }
 
     private static Hour getHour11() {
         Hour h = new Hour();
-        h.setHour(hour110.getHourOfDay());
+        h.setDate(hour110);
 
-        List<Event> events = new ArrayList<Event>();
-        events.add(new Event(hour110, "Event 110"));
-
-        h.setEvents(events);
+        h.getEvents().addAll(Arrays.asList(new Event(hour110, "Event 110")));
 
         return h;
     }
 
     private static Hour getHour12() {
         Hour h = new Hour();
-        h.setHour(hour120.getHourOfDay());
+        h.setDate(hour120);
 
-        List<Event> events = new ArrayList<Event>();
-        events.add(new Event(hour120, "Event 120"));
-
-        h.setEvents(events);
+        h.getEvents().addAll(Arrays.asList(new Event(hour120, "Event 120")));
 
         return h;
     }
 
     private static Hour getHour13() {
         Hour h = new Hour();
-        h.setHour(hour130.getHourOfDay());
+        h.setDate(hour130);
 
-        List<Event> events = new ArrayList<Event>();
-        events.add(new Event(hour130, "Event 130"));
-
-        h.setEvents(events);
+        h.getEvents().addAll(Arrays.asList(new Event(hour130, "Event 130")));
 
         return h;
     }
 
     private static Hour getHour14() {
         Hour h = new Hour();
-        h.setHour(hour140.getHourOfDay());
+        h.setDate(hour140);
 
-        List<Event> events = new ArrayList<Event>();
-        events.add(new Event(hour140, "Event 140"));
-
-        h.setEvents(events);
+        h.getEvents().addAll(Arrays.asList(new Event(hour140, "Event 140")));
 
         return h;
     }
 
     private static Hour getHour15() {
         Hour h = new Hour();
-        h.setHour(hour150.getHourOfDay());
+        h.setDate(hour150);
 
-        List<Event> events = new ArrayList<Event>();
-        events.add(new Event(hour150, "Event 150"));
-
-        h.setEvents(events);
+        h.getEvents().addAll(Arrays.asList(new Event(hour150, "Event 150")));
 
         return h;
     }
 
     private static Day getDate1() {
         Day day = new Day();
-        day.setDay(hour11.getDayOfMonth());
+        day.setDate(hour11);
 
-        List<Period> hours = new ArrayList<Period>();
-        hours.add(getHour1());
-        hours.add(getHour2());
-        hours.add(getHour3());
-
-        day.setHours(hours);
+        day.setChildren(Arrays.asList(getHour1(), getHour2(), getHour3()));
 
         return day;
     }
 
     private static Day getDate2() {
         Day day = new Day();
-        day.setDay(hour4.getDayOfMonth());
+        day.setDate(hour4);
 
-        List<Period> hours = new ArrayList<Period>();
-        hours.add(getHour4());
-
-        day.setHours(hours);
+        day.setChildren(Arrays.asList(getHour4()));
 
         return day;
     }
 
     private static Day getDate3() {
         Day day = new Day();
-        day.setDay(hour51.getDayOfMonth());
+        day.setDate(hour51);
 
-        List<Period> hours = new ArrayList<Period>();
-        hours.add(getHour5());
-        hours.add(getHour6());
-
-        day.setHours(hours);
+        day.setChildren(Arrays.asList(getHour5(), getHour6()));
 
         return day;
     }
 
     private static Day getDate4() {
         Day day = new Day();
-        day.setDay(hour7.getDayOfMonth());
+        day.setDate(hour7);
 
-        List<Period> hours = new ArrayList<Period>();
-        hours.add(getHour7());
-        hours.add(getHour8());
-
-        day.setHours(hours);
+        day.setChildren(Arrays.asList(getHour7(), getHour8()));
 
         return day;
     }
 
     private static Day getDate5() {
         Day day = new Day();
-        day.setDay(hour91.getDayOfMonth());
+        day.setDate(hour91);
 
-        List<Period> hours = new ArrayList<Period>();
-        hours.add(getHour91());
-        hours.add(getHour92());
-
-        day.setHours(hours);
+        day.setChildren(Arrays.asList(getHour91(), getHour92()));
 
         return day;
     }
 
     private static Day getDate6() {
         Day day = new Day();
-        day.setDay(hour101.getDayOfMonth());
+        day.setDate(hour101);
 
-        List<Period> hours = new ArrayList<Period>();
-        hours.add(getHour10());
-        hours.add(getHour11());
-
-        day.setHours(hours);
+        day.setChildren(Arrays.asList(getHour10(), getHour11()));
 
         return day;
     }
 
     private static Day getDate7() {
         Day day = new Day();
-        day.setDay(hour120.getDayOfMonth());
+        day.setDate(hour120);
 
-        List<Period> hours = new ArrayList<Period>();
-        hours.add(getHour12());
-        hours.add(getHour13());
-
-        day.setHours(hours);
+        day.setChildren(Arrays.asList(getHour12(), getHour13()));
 
         return day;
     }
 
     private static Day getDate8() {
         Day day = new Day();
-        day.setDay(hour140.getDayOfMonth());
+        day.setDate(hour140);
 
-        List<Period> hours = new ArrayList<Period>();
-        hours.add(getHour14());
-
-        day.setHours(hours);
+        day.setChildren(Arrays.asList(getHour14()));
 
         return day;
     }
 
     private static Day getDate9() {
         Day day = new Day();
-        day.setDay(hour150.getDayOfMonth());
+        day.setDate(hour150);
 
-        List<Period> hours = new ArrayList<Period>();
-        hours.add(getHour15());
-
-        day.setHours(hours);
+        day.setChildren(Arrays.asList(getHour15()));
 
         return day;
     }
 
     private static Month getMonth1() {
         Month month = new Month();
-        month.setMonth(hour11.getMonthOfYear());
+        month.setDate(hour11);
 
-        List<Period> days = new ArrayList<Period>();
-        days.add(getDate1());
-        days.add(getDate2());
-        days.add(getDate3());
-        days.add(getDate4());
-        days.add(getDate5());
-
-        month.setDays(days);
+        month.setChildren(Arrays.asList(getDate1(), getDate2(), getDate3(), getDate4(), getDate5()));
 
         return month;
     }
 
     private static Month getMonth2() {
         Month month = new Month();
-        month.setMonth(hour101.getMonthOfYear());
+        month.setDate(hour101);
 
-        List<Period> days = new ArrayList<Period>();
-        days.add(getDate6());
-        days.add(getDate7());
-        days.add(getDate8());
-        days.add(getDate9());
-
-        month.setDays(days);
+        month.setChildren(Arrays.asList(getDate6(), getDate7(), getDate8(), getDate9()));
 
         return month;
     }

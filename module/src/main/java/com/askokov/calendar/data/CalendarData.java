@@ -5,8 +5,8 @@ import java.io.File;
 import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
-import com.askokov.calendar.model.Day;
-import com.askokov.calendar.model.Month;
+import com.askokov.calendar.period.Day;
+import com.askokov.calendar.period.Month;
 import org.joda.time.DateTime;
 
 public class CalendarData {

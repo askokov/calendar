@@ -11,30 +11,38 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.askokov.calendar.R;
+import com.askokov.calendar.data.CalendarFactory;
 import com.askokov.calendar.listener.ListPositionListener;
-import com.askokov.calendar.model.Day;
-import com.askokov.calendar.model.Event;
-import com.askokov.calendar.model.Period;
+import com.askokov.calendar.period.Event;
+import com.askokov.calendar.period.EventPeriod;
+import com.askokov.calendar.period.Period;
+import com.askokov.calendar.period.Type;
 
-public class CalendarDetailAdapter extends CalendarBaseAdapter {
-    private static final String TAG = "CalendarDetailAdapter";
+public class CalendarAdapter extends PeriodAdapter {
+    private static final String TAG = "CalendarAdapter";
 
     private Context context;
     private LayoutInflater mLayoutInflater;
-    private List<Pair<Period, Period>> content;
+    private int layout;
+    private CalendarFactory calendarFactory;
+    private List<Pair<EventPeriod, EventPeriod>> content;
 
-    public CalendarDetailAdapter(final Context context, final ListPositionListener listPositionListener) {
+    public CalendarAdapter(final Context context, final ListPositionListener listPositionListener,
+                           final CalendarFactory calendarFactory) {
         this.context = context;
         this.mLayoutInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.calendarFactory = calendarFactory;
 
         setListPositionListener(listPositionListener);
     }
 
-    public void setContent(final List<Pair<Period, Period>> content, final Period.Type contentType) {
-        Log.i(TAG, "setContent");
-        this.content = content;
+    public void setContent(final Period current) {
+        Log.i(TAG, "Set content with type");
 
-        getListPositionListener().setContentType(contentType);
+        this.content = calendarFactory.getPeriod(current);
+        layout = current.getType() == Type.MONTH ? R.layout.month_layout : R.layout.day_layout;
+
+        getListPositionListener().setContentType(current.getType());
     }
 
     @Override
@@ -50,7 +58,7 @@ public class CalendarDetailAdapter extends CalendarBaseAdapter {
     }
 
     @Override
-    public Pair<Period, Period> getItem(int position) {
+    public Pair<EventPeriod, EventPeriod> getItem(int position) {
         return content.get(position);
     }
 
@@ -63,12 +71,12 @@ public class CalendarDetailAdapter extends CalendarBaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         View view = convertView;
         if (view == null) {
-            view = mLayoutInflater.inflate(R.layout.events_layout, parent, false);
+            view = mLayoutInflater.inflate(layout, parent, false);
         }
 
-        Pair<Period, Period> pair = getItem(position);
+        Pair<EventPeriod, EventPeriod> pair = getItem(position);
 
-        final Period first = pair.first;
+        final EventPeriod first = pair.first;
         LinearLayout firstLayout = (LinearLayout) view.findViewById(R.id.first);
         firstLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,25 +89,18 @@ public class CalendarDetailAdapter extends CalendarBaseAdapter {
 
         LinearLayout firstLinearLayout = (LinearLayout)view.findViewById(R.id.eventFirstContainer);
         firstLinearLayout.removeAllViews();
-        if (Period.Type.HOUR == first.getType()) {
+        if (Type.HOUR == first.getType()) {
             populateEventLayout(first, firstLinearLayout);
-            view.findViewById(R.id.pinFirst).setBackgroundResource(R.drawable.pin_none);
-        } else if (Period.Type.DAY == first.getType()) {
+        } else if (Type.DAY == first.getType()) {
             if (first.getChildren() != null) {
-                for (Period p : first.getChildren()) {
+                for (EventPeriod p : first.getChildren()) {
                     populateEventLayout(p, firstLinearLayout);
                 }
-            }
-
-            if (((Day)first).isCurrent()) {
-                view.findViewById(R.id.pinFirst).setBackgroundResource(R.drawable.pin_blue);
-            } else {
-                view.findViewById(R.id.pinFirst).setBackgroundResource(R.drawable.pin_gray);
             }
         }
         ((TextView) view.findViewById(R.id.textLabelFirst)).setText(first.getLabel());
 
-        final Period second = pair.second;
+        final EventPeriod second = pair.second;
         LinearLayout secondLayout = (LinearLayout) view.findViewById(R.id.second);
         if (second != null) {
             secondLayout.setVisibility(View.VISIBLE);
@@ -115,20 +116,13 @@ public class CalendarDetailAdapter extends CalendarBaseAdapter {
 
             LinearLayout secondLinearLayout = (LinearLayout)view.findViewById(R.id.eventSecondContainer);
             secondLinearLayout.removeAllViews();
-            if (Period.Type.HOUR == second.getType()) {
+            if (Type.HOUR == second.getType()) {
                 populateEventLayout(second, secondLinearLayout);
-                view.findViewById(R.id.pinFirst).setBackgroundResource(R.drawable.pin_none);
-            } else if (Period.Type.DAY == second.getType()) {
+            } else if (Type.DAY == second.getType()) {
                 if (second.getChildren() != null) {
-                    for (Period p : second.getChildren()) {
+                    for (EventPeriod p : second.getChildren()) {
                         populateEventLayout(p, secondLinearLayout);
                     }
-                }
-
-                if (((Day)second).isCurrent()) {
-                    view.findViewById(R.id.pinSecond).setBackgroundResource(R.drawable.pin_blue);
-                } else {
-                    view.findViewById(R.id.pinSecond).setBackgroundResource(R.drawable.pin_gray);
                 }
             }
             ((TextView) view.findViewById(R.id.textLabelSecond)).setText(second.getLabel());
@@ -139,7 +133,7 @@ public class CalendarDetailAdapter extends CalendarBaseAdapter {
         return view;
     }
 
-    private void populateEventLayout(Period period, final LinearLayout layout) {
+    private void populateEventLayout(EventPeriod period, final LinearLayout layout) {
         if (period.getEvents() != null) {
             for (Event event : period.getEvents()) {
                 TextView tv = createEventTextView(event);

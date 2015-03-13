@@ -9,30 +9,12 @@
     android:baselineAligned="false"
     android:orientation="vertical">
 
-    <LinearLayout
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:baselineAligned="false"
-        android:orientation="horizontal">
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btnPrev" android:layout_weight="1" android:background="@drawable/left"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/textPeriod"
-            android:gravity="center_horizontal" android:layout_weight="4" android:text="16-22 Февраля"
-            android:layout_gravity="center"/>
-
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btnNext" android:layout_weight="1" android:background="@drawable/right"/>
-
-    </LinearLayout>
+        android:id="@+id/textPeriod"
+        android:gravity="center_horizontal" android:text="16-22 Февраля"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -55,7 +37,7 @@
                 <Button
                     style="?android:attr/buttonStyleSmall"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:id="@+id/day1"
                     android:background="@drawable/circle_grey"/>
 
@@ -67,7 +49,7 @@
                 <Button
                     style="?android:attr/buttonStyleSmall"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:id="@+id/day2"
                     android:background="@drawable/circle_grey"/>
 
@@ -79,7 +61,7 @@
                 <Button
                     style="?android:attr/buttonStyleSmall"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:id="@+id/day3"
                     android:background="@drawable/circle_grey"/>
 
@@ -91,7 +73,7 @@
                 <Button
                     style="?android:attr/buttonStyleSmall"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:id="@+id/day4"
                     android:background="@drawable/circle_grey"/>
 
@@ -103,7 +85,7 @@
                 <Button
                     style="?android:attr/buttonStyleSmall"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:id="@+id/day5"
                     android:background="@drawable/circle_grey"/>
 
@@ -115,7 +97,7 @@
                 <Button
                     style="?android:attr/buttonStyleSmall"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:id="@+id/day6"
                     android:background="@drawable/circle_grey"/>
 
@@ -127,7 +109,7 @@
                 <Button
                     style="?android:attr/buttonStyleSmall"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:id="@+id/day7"
                     android:background="@drawable/circle_grey"/>
 

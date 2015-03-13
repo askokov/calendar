@@ -4,8 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import com.askokov.calendar.model.Day;
-import com.askokov.calendar.model.Month;
+import com.askokov.calendar.period.Day;
+import com.askokov.calendar.period.Month;
 import org.joda.time.DateTime;
 
 public class DBHelper extends SQLiteOpenHelper {
@@ -41,7 +41,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
         db.close();
 
-        return Demo.createDayModel(date);
+        return DemoPeriod.createDayModel(date);
     }
 
     public Month getMonthModel(DateTime date) {
@@ -49,6 +49,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
         db.close();
 
-        return Demo.createMonthModel(date);
+        return DemoPeriod.createMonthModel(date);
     }
 }

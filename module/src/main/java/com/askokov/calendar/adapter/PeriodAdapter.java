@@ -3,13 +3,17 @@ package com.askokov.calendar.adapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import com.askokov.calendar.listener.ListPositionListener;
-import com.askokov.calendar.listener.PeriodClickListener;
+import com.askokov.calendar.period.EventPeriod;
 
-public abstract class CalendarBaseAdapter extends BaseAdapter {
+public abstract class PeriodAdapter extends BaseAdapter {
 
     private ListPositionListener listPositionListener;
     private PeriodClickListener periodClickListener;
     private ListView listView;
+
+    public interface PeriodClickListener {
+        void onPeriodClick(EventPeriod period);
+    }
 
     public void setListPositionListener(final ListPositionListener listPositionListener) {
         this.listPositionListener = listPositionListener;
