@@ -9,14 +9,13 @@
     android:baselineAligned="false"
     android:orientation="vertical">
 
-    <com.askokov.calendar.CalendarViewPager
+    <com.askokov.calendar.WrappedViewPager
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/periodPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-    </com.askokov.calendar.CalendarViewPager>
+    </com.askokov.calendar.WrappedViewPager>
 
     <com.askokov.calendar.CalendarListView
         android:id="@+id/calendarList"

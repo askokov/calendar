@@ -7,12 +7,11 @@ import android.widget.AbsListView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import com.askokov.calendar.adapter.PeriodAdapter;
-import com.askokov.calendar.adapter.CalendarAdapter;
 
 public class CalendarListView extends ListView {
     private static final String TAG = "CalendarListView";
 
-    private CalendarAdapter mAdapter;
+    private PeriodAdapter mAdapter;
 
     public CalendarListView(final Context context) {
         super(context);
@@ -26,19 +25,15 @@ public class CalendarListView extends ListView {
         super(context, attrs, defStyle);
     }
 
-    public boolean isAdapter() {
-        return mAdapter != null;
-    }
-
     @Override
     public void setAdapter(final ListAdapter adapter) {
         Log.i(TAG, "setAdapter");
         if (!(adapter instanceof PeriodAdapter)) {
-            throw new ClassCastException(adapter.toString() + " must extends CalendarBaseAdapter");
+            throw new ClassCastException(adapter.toString() + " must extends PeriodAdapter");
         }
         super.setAdapter(adapter);
 
-        mAdapter = (CalendarAdapter) adapter;
+        mAdapter = (PeriodAdapter) adapter;
         mAdapter.setListView(this);
 
         setOnScrollListener(new AbsListView.OnScrollListener() {

@@ -23,7 +23,7 @@ public class CalendarAdapter extends PeriodAdapter {
 
     private Context context;
     private LayoutInflater mLayoutInflater;
-    private int layout;
+    private int mLayout;
     private CalendarFactory calendarFactory;
     private List<Pair<EventPeriod, EventPeriod>> content;
 
@@ -40,7 +40,7 @@ public class CalendarAdapter extends PeriodAdapter {
         Log.i(TAG, "Set content with type");
 
         this.content = calendarFactory.getPeriod(current);
-        layout = current.getType() == Type.MONTH ? R.layout.month_layout : R.layout.day_layout;
+        mLayout = current.getType() == Type.MONTH ? R.layout.month_layout : R.layout.day_layout;
 
         getListPositionListener().setContentType(current.getType());
     }
@@ -71,7 +71,7 @@ public class CalendarAdapter extends PeriodAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         View view = convertView;
         if (view == null) {
-            view = mLayoutInflater.inflate(layout, parent, false);
+            view = mLayoutInflater.inflate(mLayout, parent, false);
         }
 
         Pair<EventPeriod, EventPeriod> pair = getItem(position);
